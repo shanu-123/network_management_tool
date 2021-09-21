@@ -68,7 +68,7 @@ def turn_On_Off_interface():
 		ch = int(input("\tEnter the choice"))
 		if ch == 1:
 			inter_name = input("\tEnter the interface name from the above menu list :")
-			cmd = f"sudo ip link set dev {inter_name} un" # turn on interface
+			cmd = f"sudo ip link set dev {inter_name} up" # turn on interface
 			on = os.popen(cmd).read()
 			print("................Turn on interface................")
 			print(os.popen("ip a").read())
