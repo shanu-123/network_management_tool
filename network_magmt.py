@@ -88,8 +88,9 @@ def turn_On_Off_interface():
 
 def add_arp_entry():
 	menu()
+	ip = input("Enter the ip address to add :")
 	inter_name = input("Enter the interface name :")
-	cmd =f"sudo ip n add 192.168.1.200 lladdr 00:45:78:52:ed:55 dev {inter_name} nud permanent" # add arp entry
+	cmd =f"sudo ip n add {ip} lladdr 00:45:78:52:ed:55 dev {inter_name} nud permanent" # add arp entry
 	arp = os.popen(cmd).read()
 	print(".................Adding ARP entry.......................")
 	print(os.popen("ip n show").read())
@@ -97,8 +98,9 @@ def add_arp_entry():
 
 def delete_arp_entry():
 	menu()
+	ip = input("Enter the ip address to delete :")
 	inter_name = input("Enter the interface name :")
-	cmd =f"sudo ip n flush 192.168.1.200 dev {inter_name} nud permanent" # flush arp entry
+	cmd =f"sudo ip n flush {ip} dev {inter_name} nud permanent" # flush arp entry
 	arp = os.popen(cmd).read()
 	print("........................Deleting ARP entry....................")
 	print(os.popen("ip n show").read())
