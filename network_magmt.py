@@ -14,6 +14,9 @@ def menu():
 		console.print(f"\t{count}.{i}",style="bold green")
 		count += 1
 
+def display_inter(interface):
+	print(os.popen(f"ip -4 a show {interface}").read()) # showing ip address  
+
 
 def assign_ip():
 	menu()
@@ -21,18 +24,17 @@ def assign_ip():
 	inter_name = input("Enter the interface name from above menu list :")
 	cmd =f"sudo ip address add {ip} dev {inter_name}" # assigning ip address
 	ip_assign = os.popen(cmd).read()
-	print("...................Assigning IP...............................")
-	print(os.popen(f"ip -4 a show {inter_name}").read()) # showing ip address
-	console.print("\tSuccessfully Added the IP address",style="bold blue") 	
-
+	display_inter(inter_name)
+	console.print("\tSuccessfully Added ",style="bold blue") 
+	
 def del_ip():
 	menu()
 	ip = input("Enter the ip address to delete :")
 	inter_name = input("Enter the interface name from above menu list :")
 	cmd = f"sudo ip address del {ip} dev {inter_name}" # deleting ip address
 	del_ip = os.popen(cmd).read()
+	display_inter(inter_name)
 	print("....................Deleting IP.................................")
-	print(os.popen(f"ip -4 a show {inter_name}").read()) # showing ip address
 	console.print("\tSuccessfully Deleted the IP address",style="bold red") 
 
 def display_ip():
@@ -51,9 +53,10 @@ def display_interface():
 
 def conf_route():
 	menu()
-	ip = input("Enter the ip address to add :")
+	ip = input("Enter the network address/mask :")
+	gateway_ip = input("Enter the gateway address :")
 	inter_name = input("Enter the interface name :")
-	cmd = f"sudo ip r add 10.2.3.0/24 via {ip} dev {inter_name}" # addind new route
+	cmd = f"sudo ip r add {ip} via {gateway_ip} dev {inter_name}" # addind new route
 	print("....................Adding Routing..........................")
 	print(os.popen("ip r").read()) 
 	console.print("\tSuccessfully added the routing",style="bold blue")
@@ -88,9 +91,10 @@ def turn_On_Off_interface():
 
 def add_arp_entry():
 	menu()
-	ip = input("Enter the ip address to add :")
+	ip = input("Enter the ip address :")
 	inter_name = input("Enter the interface name :")
-	cmd =f"sudo ip n add {ip} lladdr 00:45:78:52:ed:55 dev {inter_name} nud permanent" # add arp entry
+	mac_addr = input("Enter the mac address :")
+	cmd =f"sudo ip n add {ip} lladdr {mac_addr}  dev {inter_name} nud permanent" # add arp entry
 	arp = os.popen(cmd).read()
 	print(".................Adding ARP entry.......................")
 	print(os.popen("ip n show").read())
@@ -113,14 +117,16 @@ def restart_network():
 	console.print(re_net,style="bold blue")
 
 def change_hostname():
-	cmd = "sudo hostname shanususanabraham" # change hostname
+	host_name = input("Enter the host name :")
+	cmd = f"sudo hostname {host_name}" # change hostname
 	change_host = os.popen(cmd).read()
 	change_host_det = os.popen("hostnamectl status").read()
 	print(".................Changing Host name..............")
 	console.print(change_host_det,style="bold blue")
 
 def new_dns_entry():
-	dns = os.popen("sudo cat >> /etc/resolv.conf").read() # add new dns server
+	ip = input("Enter the ip address :")
+	dns = os.popen(f"sudo echo 'nameserver' {ip} >> /etc/resolv.conf").read() # add new dns server
 	print(".................Adding DNS entry................")
 	console.print(dns,style="bold blue")	
 
